@@ -1,4 +1,9 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripeApiKey = process.env.STRIPE_SECRET_KEY;
+const stripe = stripeApiKey ? require('stripe')(stripeApiKey) : null;
+
+if (!stripe) {
+    console.warn('⚠️ STRIPE_SECRET_KEY is not defined. Stripe features will be disabled.');
+}
 
 const stripeUtil = {
     /**
@@ -9,6 +14,9 @@ const stripeUtil = {
      * @param {string} cancelUrl - URL to redirect after cancellation
      */
     async createCheckoutSession(customerEmail, priceId, successUrl, cancelUrl) {
+        if (!stripe) {
+            throw new Error('Stripe is not configured. Please set STRIPE_SECRET_KEY.');
+        }
         try {
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
@@ -36,6 +44,9 @@ const stripeUtil = {
      * @param {string} sessionId 
      */
     async getSession(sessionId) {
+        if (!stripe) {
+            throw new Error('Stripe is not configured. Please set STRIPE_SECRET_KEY.');
+        }
         return await stripe.checkout.sessions.retrieve(sessionId);
     }
 };
