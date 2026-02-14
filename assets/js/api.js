@@ -1,6 +1,6 @@
 // Production API Configuration
 const API_CONFIG = {
-    baseURL: 'http://localhost:5001',
+    baseURL: 'https://nutriconsult-pro-production.up.railway.app',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json'

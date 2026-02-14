@@ -24,7 +24,7 @@ const ChatController = {
 
     setupSocket() {
         const token = localStorage.getItem('nutri_token');
-        this.socket = io('http://localhost:5001', {
+        this.socket = io('https://nutriconsult-pro-production.up.railway.app', {
             auth: { token }
         });
 

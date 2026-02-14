@@ -49,6 +49,7 @@ app.use(helmet({
 // CORS Configuration
 const allowedOrigins = [
     process.env.FRONTEND_URL,
+    'https://loquacious-seahorse-cd71fc.netlify.app',
     'http://localhost:5001',
     'http://127.0.0.1:5001'
 ].filter(Boolean);
