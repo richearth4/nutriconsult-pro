@@ -51,13 +51,14 @@ const allowedOrigins = [
     process.env.FRONTEND_URL,
     'https://loquacious-seahorse-cd71fc.netlify.app',
     'http://localhost:5001',
-    'http://127.0.0.1:5001'
+    'http://127.0.0.1:5001',
+    'http://localhost:8000'
 ].filter(Boolean);
 
 app.use(cors({
     origin: function (origin, callback) {
-        // allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
+        // allow requests with no origin (like mobile apps or curl requests) or local file requests
+        if (!origin || origin === 'null') return callback(null, true);
         if (allowedOrigins.indexOf(origin) === -1 && process.env.NODE_ENV === 'production') {
             var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
             return callback(new Error(msg), false);
@@ -83,9 +84,9 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from root
 app.use(express.static(__dirname));
 
-// Root Route for Debugging
+// Root Route for frontend
 app.get('/', (req, res) => {
-    res.json({ status: 'online', message: 'NutriConsult Backend is Running!' });
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Routes

@@ -38,35 +38,86 @@
     <button class="lang-btn" data-lang="es" onclick="I18nManager.changeLanguage('es')">ES</button>
 </div>
 
-<div class="auth-card animate-fade-in">
+<div class="auth-card animate-slide-up">
     <div class="text-center mb-6">
-        <h1 style="color: var(--primary); font-size: 2rem;" data-i18n="login.title">NutriConsult Pro</h1>
-        <p style="color: var(--text-muted);" data-i18n="login.subtitle">Smart Nutrition Management</p>
+        <h1 class="brand-title" data-i18n="login.title">NutriConsult Pro</h1>
+        <p class="brand-subtitle" data-i18n="login.subtitle">Smart Nutrition Management</p>
     </div>
 
-    <form id="loginForm">
-        <div class="input-group">
-            <label for="email" class="input-label" data-i18n="login.email_label">Email Address</label>
-            <input type="email" id="email" class="form-control" placeholder="admin@nutri.com" required>
+    <!-- Login Form -->
+    <div id="loginSection">
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="email" class="input-label" data-i18n="login.email_label">Email Address</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" class="form-control" placeholder="name@example.com" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password" class="input-label" data-i18n="login.password_label">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <div id="errorMsg" class="error-feedback" style="display: none;">
+                Invalid credentials
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" data-i18n="login.signin_btn">Sign In</button>
+        </form>
+
+        <div class="divider">
+            <span>or</span>
         </div>
 
-        <div class="input-group">
-            <label for="password" class="input-label" data-i18n="login.password_label">Password</label>
-            <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+        <button class="btn btn-google btn-block">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" height="18" style="margin-right: 10px;">
+            Sign in with Google
+        </button>
+
+        <p class="auth-toggle-text">
+            Don't have an account? <a href="#" onclick="toggleAuth('signup')">Create one</a>
+        </p>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="signupSection" style="display: none;">
+        <form id="signupForm">
+            <div class="input-group">
+                <label for="regName" class="input-label">Full Name</label>
+                <input type="text" id="regName" class="form-control" placeholder="John Doe" required>
+            </div>
+
+            <div class="input-group">
+                <label for="regEmail" class="input-label">Email Address</label>
+                <input type="email" id="regEmail" class="form-control" placeholder="name@example.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="regPassword" class="input-label">Password</label>
+                <input type="password" id="regPassword" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <div id="regErrorMsg" class="error-feedback" style="display: none;">
+                Registration failed
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+
+        <div class="divider">
+            <span>or</span>
         </div>
 
-        <div id="errorMsg" style="color: #EF4444; font-size: 0.875rem; display: none; margin-bottom: 1rem;">
-            Invalid credentials
-        </div>
+        <button class="btn btn-google btn-block">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" height="18" style="margin-right: 10px;">
+            Sign up with Google
+        </button>
 
-        <button type="submit" class="btn btn-primary btn-block" data-i18n="login.signin_btn">Sign In</button>
-    </form>
-
-    <div class="mt-4 text-center">
-        <p style="font-size: 0.875rem; color: var(--text-muted);">
-            Demo Credentials:<br>
-            Admin: admin@nutri.com / password<br>
-            Client: client@nutri.com / password
+        <p class="auth-toggle-text">
+            Already have an account? <a href="#" onclick="toggleAuth('login')">Sign in</a>
         </p>
     </div>
 </div>

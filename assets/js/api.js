@@ -11,8 +11,12 @@ const API_CONFIG = {
 const api = {
     async request(endpoint, options = {}) {
         const token = localStorage.getItem('nutri_token');
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.timeout);
+
         const config = {
             ...options,
+            signal: controller.signal,
             headers: {
                 ...API_CONFIG.headers,
                 ...options.headers,
@@ -22,14 +26,26 @@ const api = {
 
         try {
             const response = await fetch(`${API_CONFIG.baseURL}${endpoint}`, config);
-            const data = await response.json();
+            clearTimeout(timeoutId);
+
+            let data;
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                data = { error: await response.text() };
+            }
 
             if (!response.ok) {
-                throw new Error(data.error || 'Request failed');
+                throw new Error(data.error || `Request failed with status ${response.status}`);
             }
 
             return data;
         } catch (error) {
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError') {
+                throw new Error('Request timed out. The server might be waking up (Railway spin-up).');
+            }
             console.error('API Error:', error);
             throw error;
         }

@@ -41,55 +41,108 @@ document.addEventListener('DOMContentLoaded', async () => {
             const errorMsg = document.getElementById('errorMsg');
             const submitBtn = loginForm.querySelector('button[type="submit"]');
 
-            // Disable button during login
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Signing in...';
-
-            try {
+            handleAuthAction(async () => {
                 const response = await api.login(email, password);
-
                 if (response.success) {
-                    // Store token
-                    localStorage.setItem('nutri_token', response.user.token);
-
-                    // Store session
-                    const session = {
-                        userId: response.user.userId,
-                        role: response.user.role,
-                        name: response.user.name,
-                        email: response.user.email,
-                        subscriptionTier: response.user.subscriptionTier || 'free'
-                    };
-                    localStorage.setItem('nutri_session', JSON.stringify(session));
-
-                    // Redirect based on role
+                    saveSession(response.user);
                     redirectUser(response.user.role);
                 } else {
-                    errorMsg.textContent = 'Invalid credentials';
-                    errorMsg.style.display = 'block';
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Sign In';
+                    throw new Error('Invalid credentials');
                 }
-            } catch (error) {
-                console.error('Login error:', error);
-                errorMsg.textContent = error.message || 'Login failed. Please try again.';
-                errorMsg.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Sign In';
-            }
+            }, submitBtn, errorMsg, 'Sign In');
         });
     }
 
-    // Logout Handler
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', (e) => {
+    // Sign Up Form Handler
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            logout();
-            window.location.href = 'index.html';
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const errorMsg = document.getElementById('regErrorMsg');
+            const submitBtn = signupForm.querySelector('button[type="submit"]');
+
+            handleAuthAction(async () => {
+                const response = await api.register(email, password, name);
+                if (response.success) {
+                    saveSession(response.user);
+                    redirectUser(response.user.role);
+                } else {
+                    throw new Error(response.error || 'Registration failed');
+                }
+            }, submitBtn, errorMsg, 'Create Account');
         });
     }
+
+    // Google Auth Placeholder
+    document.querySelectorAll('.btn-google').forEach(btn => {
+        btn.addEventListener('click', () => {
+            alert('Google Sign-in integration coming soon!');
+        });
+    });
 });
+
+/**
+ * Common Auth Action Handler
+ */
+async function handleAuthAction(action, button, errorEl, originalText) {
+    button.disabled = true;
+    const originalContent = button.innerHTML;
+    button.innerHTML = '<span class="spinner"></span> Processing...';
+    errorEl.style.display = 'none';
+
+    try {
+        await action();
+    } catch (error) {
+        console.error('Auth error:', error);
+        errorEl.textContent = error.message || 'Action failed. Please try again.';
+        errorEl.style.display = 'block';
+        button.disabled = false;
+        button.innerHTML = originalContent;
+    }
+}
+
+function saveSession(user) {
+    localStorage.setItem('nutri_token', user.token);
+    const session = {
+        userId: user.userId,
+        role: user.role,
+        name: user.name,
+        email: user.email,
+        subscriptionTier: user.subscriptionTier || 'free'
+    };
+    localStorage.setItem('nutri_session', JSON.stringify(session));
+}
+
+function toggleAuth(type) {
+    const loginSec = document.getElementById('loginSection');
+    const signupSec = document.getElementById('signupSection');
+    const authCard = document.querySelector('.auth-card');
+
+    authCard.classList.remove('animate-slide-up');
+    void authCard.offsetWidth; // Trigger reflow
+    authCard.classList.add('animate-slide-up');
+
+    if (type === 'signup') {
+        loginSec.style.display = 'none';
+        signupSec.style.display = 'block';
+    } else {
+        loginSec.style.display = 'block';
+        signupSec.style.display = 'none';
+    }
+}
+
+// Logout Handler
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        logout();
+        window.location.href = 'index.html';
+    });
+}
 
 function redirectUser(role) {
     if (role === 'admin') {
