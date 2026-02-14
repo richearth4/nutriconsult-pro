@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriConsult Pro - Client Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="dashboard-layout">
+
+    <!-- Mobile-first Layout: No Sidebar for Client on mobile, but keeping structure consistent -->
+    <main class="main-content" style="max-width: 800px; margin: 0 auto; width: 100%;">
+        <header class="header">
+            <div>
+                <h1>My Health</h1>
+                <p class="text-muted">Welcome, <span id="clientName">User</span>
+                    <span id="subscriptionBadge"
+                        style="margin-left: 0.5rem; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;"></span>
+                </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <div class="lang-switcher" style="margin-right: 1rem; font-size: 0.8rem; display: flex; gap: 0.3rem;">
+                    <button class="lang-btn" data-lang="en" onclick="I18nManager.changeLanguage('en')"
+                        style="background:none; border:none; color:var(--text-muted); cursor:pointer;">EN</button>
+                    <span style="color: var(--border-light)">|</span>
+                    <button class="lang-btn" data-lang="es" onclick="I18nManager.changeLanguage('es')"
+                        style="background:none; border:none; color:var(--text-muted); cursor:pointer;">ES</button>
+                </div>
+                <button class="btn btn-outline" onclick="window.location.href='profile-client.html'">👤 Profile</button>
+                <button id="upgradeBtn" class="btn btn-primary"
+                    style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+                    onclick="window.location.href='subscription.html'">⭐ Upgrade</button>
+                <button id="logoutBtn" class="btn btn-outline" style="border-color: #EF4444; color: #EF4444;"
+                    data-i18n="common.logout">Logout</button>
+            </div>
+        </header>
+
+        <!-- Intake Warning -->
+        <div id="intakeAlert" class="card mb-6" style="background: #FEF3C7; border-color: #FCD34D; display: none;">
+            <h3 style="color: #92400E;">Action Required</h3>
+            <p style="color: #92400E;">Please complete your initial health intake form to unlock your personalized plan.
+            </p>
+            <button class="btn btn-primary mt-4" onclick="window.location.href='intake-wizard.html'">Start
+                Intake</button>
+        </div>
+
+        <!-- Dashboard Widgets (Visible after intake) -->
+        <div id="dashboardWidgets" style="display: none;">
+            <div class="grid grid-cols-1 md:grid-cols-2 mb-6">
+                <!-- BMI Card -->
+                <div class="card">
+                    <h3 class="text-muted" style="font-size: 0.9rem;">BMI Score</h3>
+                    <div style="display: flex; align-items: baseline; margin-top: 0.5rem;">
+                        <span id="bmiValue"
+                            style="font-size: 2.5rem; font-weight: 700; color: var(--primary);">--</span>
+                        <span id="bmiStatus"
+                            style="margin-left: 0.5rem; color: var(--text-muted); font-weight: 500;">--</span>
+                    </div>
+                </div>
+                <!-- Progress Card -->
+                <div class="card">
+                    <h3 class="text-muted" style="font-size: 0.9rem;">Goal Progress</h3>
+                    <div class="mt-4" style="height: 10px; background: #E5E7EB; border-radius: 5px; overflow: hidden;">
+                        <div style="width: 35%; height: 100%; background: var(--secondary);"></div>
+                    </div>
+                    <p class="mt-2" style="font-size: 0.8rem; color: var(--text-muted);">35% to goal weight</p>
+                    <button class="btn btn-sm btn-outline mt-3" style="width: 100%; font-size: 0.8rem;"
+                        onclick="openWeightModal()">➕ Update Weight</button>
+                </div>
+            </div>
+
+            <!-- Activity Tracker Widget -->
+            <div id="fitnessWidget" class="mb-6">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Appointments Widget -->
+            <div id="appointmentsWidget" class="mb-6">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Meal Plan Card -->
+            <div class="card mb-6">
+                <h3 class="text-muted" style="font-size: 0.9rem;">Today's Meal Plan</h3>
+                <div class="mt-2" id="todayMealPlan">
+                    <!-- Populated by JS -->
+                    <p class="text-muted" style="font-size:0.8rem;">Loading plan...</p>
+                </div>
+            </div>
+
+            <!-- Meal Plan Card -->
+            <div class="card mb-6">
+                <h3 class="text-muted" style="font-size: 0.9rem;">Today's Meal Plan</h3>
+                <div class="mt-2" id="todayMealPlan">
+                    <!-- Populated by JS -->
+                    <p class="text-muted" style="font-size:0.8rem;">Loading plan...</p>
+                </div>
+            </div>
+
+            <!-- Health Summary -->
+            <div class="card mb-6">
+                <h3>Your Health Profile</h3>
+                <div id="healthSummaryProfile" class="mt-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Subscription Management -->
+            <div class="card">
+                <h3>Subscription & Billing</h3>
+                <div id="subscriptionManagement" class="mt-4">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div class="text-muted" style="font-size: 0.8rem;">Current Plan</div>
+                            <div id="displayTier" style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">
+                                FREE</div>
+                        </div>
+                        <button id="manageSubBtn" class="btn btn-outline"
+                            onclick="window.location.href='subscription.html'">Manage Plan</button>
+                    </div>
+                    <p id="subExpiryText" class="text-muted mt-2" style="font-size: 0.8rem;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Intake Wizard Modal/Overlay -->
+        <div id="intakeWizard"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center;">
+            <div class="card" style="width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;">
+                <div class="header">
+                    <h3>Health Intake</h3>
+                    <button class="btn btn-outline" onclick="closeIntake()"
+                        style="border: none; padding: 0.5rem;">✕</button>
+                </div>
+
+                <!-- Stepper -->
+                <div class="stepper">
+                    <div class="step active" id="step1-indicator">1</div>
+                    <div class="step" id="step2-indicator">2</div>
+                    <div class="step" id="step3-indicator">3</div>
+                    <div class="step" id="step4-indicator">4</div>
+                    <div class="step" id="step5-indicator">5</div>
+                    <div class="step" id="step6-indicator">6</div>
+                </div>
+
+                <!-- Step Content -->
+                <form id="intakeForm">
+                    <!-- Step 1: Personal -->
+                    <div class="form-step" id="step1">
+                        <h4>Personal Details</h4>
+                        <div class="input-group">
+                            <label class="input-label">Phone Number</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="+1234567890">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Date of Birth</label>
+                            <input type="date" name="dob" class="form-control">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Gender</label>
+                            <select name="gender" class="form-control">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Measurements -->
+                    <div class="form-step" id="step2" style="display: none;">
+                        <h4>Body Measurements</h4>
+                        <div class="grid grid-cols-2">
+                            <div class="input-group">
+                                <label class="input-label">Height (cm)</label>
+                                <input type="number" name="height" id="inputHeight" class="form-control"
+                                    placeholder="175">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">Weight (kg)</label>
+                                <input type="number" name="weight" id="inputWeight" class="form-control"
+                                    placeholder="70">
+                            </div>
+                        </div>
+                        <div class="input-group" style="margin-top: 1rem;">
+                            <label class="input-label">Goal Weight (kg)</label>
+                            <input type="number" name="goalWeight" class="form-control" placeholder="65">
+                        </div>
+                        <div class="card" style="background: #F0FDF4; border-color: #BBF7D0; margin-bottom: 1rem;">
+                            <p style="text-align: center; color: var(--primary-dark);">Estimated BMI: <strong
+                                    id="previewBMI">--</strong></p>
+                        </div>
+                        <div class="grid grid-cols-2">
+                            <div class="input-group">
+                                <label class="input-label">Waist (cm)</label>
+                                <input type="number" name="waist" class="form-control">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">Hip (cm)</label>
+                                <input type="number" name="hip" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Medical -->
+                    <div class="form-step" id="step3" style="display: none;">
+                        <h4>Medical History</h4>
+                        <div class="input-group">
+                            <label class="input-label">Existing Conditions</label>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <label><input type="checkbox" name="conditions" value="diabetes"> Diabetes</label>
+                                <label><input type="checkbox" name="conditions" value="hypertension">
+                                    Hypertension</label>
+                                <label><input type="checkbox" name="conditions" value="thyroid"> Thyroid</label>
+                                <label><input type="checkbox" name="conditions" value="pcos"> PCOS</label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Current Medications</label>
+                            <textarea name="medications" class="form-control" rows="3"
+                                placeholder="List any medications..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Lifestyle -->
+                    <div class="form-step" id="step4" style="display: none;">
+                        <h4>Lifestyle</h4>
+                        <div class="input-group">
+                            <label class="input-label">Smoking</label>
+                            <select name="smoking" class="form-control">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                                <option value="occasional">Occasional</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Alcohol Consumption</label>
+                            <select name="alcohol" class="form-control">
+                                <option value="none">None</option>
+                                <option value="social">Social/Occasional</option>
+                                <option value="frequent">Frequent</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Physical Activity</label>
+                            <select name="activity" class="form-control">
+                                <option value="sedentary">Sedentary (Office job)</option>
+                                <option value="light">Light (1-2 days/week)</option>
+                                <option value="moderate">Moderate (3-5 days/week)</option>
+                                <option value="active">Active (6-7 days/week)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Sleep -->
+                    <div class="form-step" id="step5" style="display: none;">
+                        <h4>Sleep Patterns</h4>
+                        <div class="input-group">
+                            <label class="input-label">Average Hours of Sleep</label>
+                            <input type="number" name="sleepHours" class="form-control" placeholder="7">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Sleep Quality</label>
+                            <select name="sleepQuality" class="form-control">
+                                <option value="good">Good</option>
+                                <option value="average">average</option>
+                                <option value="poor">Poor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Diet -->
+                    <div class="form-step" id="step6" style="display: none;">
+                        <h4>Dietary Habits</h4>
+                        <div class="input-group">
+                            <label class="input-label">Meals per Day</label>
+                            <input type="number" name="mealsPerDay" class="form-control" placeholder="3">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Water Intake (Liters)</label>
+                            <input type="number" name="water" class="form-control" step="0.5" placeholder="2.5">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Allergies / Intolerances</label>
+                            <input type="text" name="allergies" class="form-control"
+                                placeholder="e.g. Peanuts, Lactose">
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="mt-6" style="display: flex; justify-content: space-between;">
+                        <button type="button" class="btn btn-outline" id="prevBtn" onclick="changeStep(-1)"
+                            disabled>Previous</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Weight Update Modal -->
+        <div id="weightModal"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center;">
+            <div class="card" style="width: 100%; max-width: 400px;">
+                <div class="header" style="margin-bottom: 1.5rem;">
+                    <h3>Update Weight</h3>
+                    <button class="btn btn-outline" onclick="closeWeightModal()"
+                        style="border: none; padding: 0.5rem;">✕</button>
+                </div>
+                <form id="weightForm" onsubmit="submitWeight(event)">
+                    <div class="input-group">
+                        <label class="input-label">Current Weight (kg)</label>
+                        <input type="number" id="newWeight" class="form-control" step="0.1" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Date</label>
+                        <input type="date" id="weightDate" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Save Progress</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/i18next@23.7.16/dist/umd/i18next.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/nutrition.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/chat.js"></script>
+    <script src="assets/js/fitness.js"></script>
+    <script src="assets/js/appointments.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await I18nManager.init();
+
+            const session = checkAuth();
+            if (session.role !== 'client') window.location.href = 'index.html';
+
+            // Initialize App
+            await renderClientDashboard(session.userId);
+
+            // Initialize Fitness Tracker
+            const fitnessData = await FitnessManager.getSummary(session.userId);
+            FitnessManager.renderWidget(fitnessData);
+
+            // Initialize Appointments
+            const appts = await AppointmentManager.getAppointments();
+            AppointmentManager.renderClientWidget(appts);
+
+            if (typeof ChatController !== 'undefined') {
+                ChatController.init('admin-fixed-id');
+            }
+        });
+    </script>
+</body>
+
+</html>

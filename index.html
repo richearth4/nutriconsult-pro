@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriConsult Pro - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .lang-switcher {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            z-index: 1000;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .lang-btn:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<div class="lang-switcher">
+    <button class="lang-btn" data-lang="en" onclick="I18nManager.changeLanguage('en')">EN</button>
+    <span style="color: var(--border-light)">|</span>
+    <button class="lang-btn" data-lang="es" onclick="I18nManager.changeLanguage('es')">ES</button>
+</div>
+
+<div class="auth-card animate-fade-in">
+    <div class="text-center mb-6">
+        <h1 style="color: var(--primary); font-size: 2rem;" data-i18n="login.title">NutriConsult Pro</h1>
+        <p style="color: var(--text-muted);" data-i18n="login.subtitle">Smart Nutrition Management</p>
+    </div>
+
+    <form id="loginForm">
+        <div class="input-group">
+            <label for="email" class="input-label" data-i18n="login.email_label">Email Address</label>
+            <input type="email" id="email" class="form-control" placeholder="admin@nutri.com" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password" class="input-label" data-i18n="login.password_label">Password</label>
+            <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+        </div>
+
+        <div id="errorMsg" style="color: #EF4444; font-size: 0.875rem; display: none; margin-bottom: 1rem;">
+            Invalid credentials
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="login.signin_btn">Sign In</button>
+    </form>
+
+    <div class="mt-4 text-center">
+        <p style="font-size: 0.875rem; color: var(--text-muted);">
+            Demo Credentials:<br>
+            Admin: admin@nutri.com / password<br>
+            Client: client@nutri.com / password
+        </p>
+    </div>
+</div>
+
+<script src="https://unpkg.com/i18next@23.7.16/dist/umd/i18next.min.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        await I18nManager.init();
+    });
+</script>
+</body>
+
+</html>

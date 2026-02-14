@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriConsult Pro - Subscription Plans</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 2rem;">
+
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <!-- Header -->
+        <div style="text-align: center; color: white; margin-bottom: 3rem;">
+            <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Choose Your Plan</h1>
+            <p style="font-size: 1.1rem; opacity: 0.9;">Unlock premium features and take control of your nutrition</p>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3" style="gap: 2rem;">
+
+            <!-- Free Tier -->
+            <div class="card" style="text-align: center; position: relative;">
+                <div
+                    style="color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 1rem;">
+                    Free</div>
+                <div style="font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">$0</div>
+                <div style="color: var(--text-muted); margin-bottom: 2rem;">forever</div>
+
+                <ul style="list-style: none; padding: 0; text-align: left; margin-bottom: 2rem;">
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light);">✓ Basic health intake
+                    </li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light);">✓ Manual meal planning
+                    </li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light);">✓ Basic BMI tracking
+                    </li>
+                    <li style="padding: 0.5rem 0; color: var(--text-muted);">✗ AI meal generation</li>
+                    <li style="padding: 0.5rem 0; color: var(--text-muted);">✗ PDF reports</li>
+                </ul>
+
+                <button class="btn btn-outline" style="width: 100%;" disabled>Current Plan</button>
+            </div>
+
+            <!-- Premium Tier -->
+            <div class="card"
+                style="text-align: center; position: relative; border: 2px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                <div
+                    style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 0.25rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">
+                    POPULAR</div>
+
+                <div
+                    style="color: var(--primary); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 1rem; margin-top: 1rem;">
+                    Premium</div>
+                <div style="font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">$9.99
+                </div>
+                <div style="color: var(--text-muted); margin-bottom: 2rem;">per month</div>
+
+                <ul style="list-style: none; padding: 0; text-align: left; margin-bottom: 2rem;">
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light); font-weight: 500;">✓
+                        Everything in Free</li>
+                    <li
+                        style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light); color: var(--primary); font-weight: 500;">
+                        ✓ AI meal generation</li>
+                    <li
+                        style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light); color: var(--primary); font-weight: 500;">
+                        ✓ Weight history & charts</li>
+                    <li
+                        style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light); color: var(--primary); font-weight: 500;">
+                        ✓ PDF reports</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-light);">✓ Up to 5 resources
+                    </li>
+                </ul>
+
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;"
+                    onclick="handleUpgrade('premium')">Upgrade with Card</button>
+                <div id="paypal-button-container-premium"></div>
+            </div>
+
+            <!-- Pro Tier -->
+            <div class="card"
+                style="text-align: center; position: relative; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <div
+                    style="color: rgba(255,255,255,0.9); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 1rem;">
+                    Pro</div>
+                <div style="font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem;">$19.99</div>
+                <div style="opacity: 0.8; margin-bottom: 2rem;">per month</div>
+
+                <ul style="list-style: none; padding: 0; text-align: left; margin-bottom: 2rem;">
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.2); font-weight: 500;">✓
+                        Everything in Premium</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.2); font-weight: 500;">✓
+                        Unlimited resources</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.2); font-weight: 500;">✓
+                        Advanced analytics</li>
+                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.2); font-weight: 500;">✓
+                        Priority support</li>
+                    <li style="padding: 0.5rem 0; font-weight: 500;">✓ Custom meal plans</li>
+                </ul>
+
+                <button class="btn btn-primary"
+                    style="width: 100%; background: white; color: var(--primary); margin-bottom: 1rem;"
+                    onclick="handleUpgrade('pro')">Upgrade with Card</button>
+                <div id="paypal-button-container-pro"></div>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div style="text-align: center; margin-top: 3rem;">
+            <button class="btn btn-outline" style="border-color: white; color: white;" onclick="window.history.back()">←
+                Back to Dashboard</button>
+        </div>
+    </div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&vault=true&intent=subscription"
+        data-sdk-integration-source="button-factory"></script>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="assets/js/auth.js"></script>
+    <script>
+        async function handleUpgrade(tier) {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Please log in to upgrade your plan');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                const response = await fetch('/api/payments/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ plan: tier })
+                });
+
+                const data = await response.json();
+
+                if (data.url) {
+                    window.location.href = data.url;
+                } else if (data.sessionId) {
+                    // Fallback for older Stripe integration if redirecting directly isn't possible
+                    const stripe = Stripe('pk_test_your_public_key'); // This should ideally come from /api/payments/config
+                    await stripe.redirectToCheckout({ sessionId: data.sessionId });
+                } else {
+                    alert(`Error: ${data.error || 'Failed to initiate checkout'}`);
+                }
+            } catch (error) {
+                console.error('Upgrade error:', error);
+                alert('An error occurred during payment setup. Please try again.');
+            }
+        }
+
+        // PayPal Integration
+        function renderPayPalButtons() {
+            const plans = [
+                { id: 'premium', containerId: 'paypal-button-container-premium', planId: 'P-PREMIUM_PLACEHOLDER' },
+                { id: 'pro', containerId: 'paypal-button-container-pro', planId: 'P-PRO_PLACEHOLDER' }
+            ];
+
+            plans.forEach(plan => {
+                const container = document.getElementById(plan.containerId);
+                if (!container) return;
+
+                paypal.Buttons({
+                    style: {
+                        shape: 'rect',
+                        color: plan.id === 'pro' ? 'white' : 'blue',
+                        layout: 'vertical',
+                        label: 'subscribe'
+                    },
+                    createSubscription: function (data, actions) {
+                        return actions.subscription.create({
+                            'plan_id': plan.planId
+                        });
+                    },
+                    onApprove: async function (data, actions) {
+                        try {
+                            const token = localStorage.getItem('token');
+                            const response = await fetch('/api/payments/verify-paypal-subscription', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`
+                                },
+                                body: JSON.stringify({
+                                    subscriptionId: data.subscriptionID,
+                                    plan: plan.id
+                                })
+                            });
+
+                            const result = await response.json();
+                            if (result.success) {
+                                alert('Subscription successful! Redirecting to dashboard...');
+                                window.location.href = 'dashboard-client.html';
+                            } else {
+                                alert('Verification failed: ' + result.error);
+                            }
+                        } catch (error) {
+                            console.error('PayPal approval error:', error);
+                            alert('An error occurred during verification.');
+                        }
+                    }
+                }).render(`#${plan.containerId}`);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderPayPalButtons);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+{
+    "common": {
+        "dashboard": "Panel de Control",
+        "clients": "Clientes",
+        "resources": "Recursos",
+        "subscription": "Suscripción",
+        "logout": "Cerrar Sesión",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "loading": "Cargando..."
+    },
+    "login": {
+        "title": "Bienvenido de Nuevo",
+        "subtitle": "Inicia sesión para gestionar tu salud",
+        "email_label": "Correo Electrónico",
+        "password_label": "Contraseña",
+        "signin_btn": "Iniciar Sesión",
+        "no_account": "¿No tienes una cuenta?",
+        "contact_nutritionist": "Contacta a tu nutricionista"
+    },
+    "client_dashboard": {
+        "welcome": "¡Bienvenido de nuevo, {{name}}!",
+        "health_summary": "Tu Perfil de Salud",
+        "current_plan": "Plan Actual",
+        "manage_plan": "Gestionar Plan",
+        "weight_history": "Progreso de Peso",
+        "update_weight": "Actualizar Peso",
+        "meal_plans": "Tus Planes de Comidas",
+        "assigned_resources": "Recursos Asignados"
+    }
+}

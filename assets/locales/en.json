@@ -1,0 +1,31 @@
+{
+    "common": {
+        "dashboard": "Dashboard",
+        "clients": "Clients",
+        "resources": "Resources",
+        "subscription": "Subscription",
+        "logout": "Logout",
+        "save": "Save",
+        "cancel": "Cancel",
+        "loading": "Loading..."
+    },
+    "login": {
+        "title": "Welcome Back",
+        "subtitle": "Sign in to manage your health journey",
+        "email_label": "Email Address",
+        "password_label": "Password",
+        "signin_btn": "Sign In",
+        "no_account": "Don't have an account?",
+        "contact_nutritionist": "Contact your nutritionist"
+    },
+    "client_dashboard": {
+        "welcome": "Welcome back, {{name}}!",
+        "health_summary": "Your Health Profile",
+        "current_plan": "Current Plan",
+        "manage_plan": "Manage Plan",
+        "weight_history": "Weight Progress",
+        "update_weight": "Update Weight",
+        "meal_plans": "Your Meal Plans",
+        "assigned_resources": "Assigned Resources"
+    }
+}

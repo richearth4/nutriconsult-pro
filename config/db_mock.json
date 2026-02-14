@@ -1,0 +1,127 @@
+{
+  "users": [
+    {
+      "id": "7253b216-56be-4581-9964-672522af3918",
+      "email": "admin@nutri.com",
+      "password_hash": "$2a$10$4KGXXqkp0Zt/3Aai6j9L..cDqNmAlPsx9fZnL/T5NZg784t6PtGRG",
+      "name": "Admin Test",
+      "role": "admin",
+      "subscription_tier": "pro"
+    },
+    {
+      "id": "e499dce4-28b9-43c9-9404-586b3f7de174",
+      "email": "client@nutri.com",
+      "password_hash": "$2a$10$Elb8SFJRnp8BhG0RuGJzdet9/mNTAlkBIaLaiJwI6jmi.TsDNXHj6",
+      "name": "Client Test",
+      "role": "client",
+      "subscription_tier": "free"
+    }
+  ],
+  "client_data": [],
+  "weight_history": [],
+  "meal_plans": [],
+  "resources": [
+    {
+      "id": "r1",
+      "title": "Healthy Eating Guide",
+      "type": "article",
+      "url": "https://example.com/guide"
+    },
+    {
+      "id": "r2",
+      "title": "Macro Calculator",
+      "type": "tool",
+      "url": "https://example.com/macros"
+    }
+  ],
+  "resource_assignments": [],
+  "consultation_notes": [],
+  "meal_plan_templates": [
+    {
+      "id": "5hgy78",
+      "name": "Weight Loss Starter",
+      "description": "Low calorie, high protein 7-day plan.",
+      "data": {
+        "monday": {
+          "b": "Egg white omelette with spinach",
+          "l": "Grilled chicken salad",
+          "d": "Baked salmon with broccoli"
+        },
+        "tuesday": {
+          "b": "Greek yogurt with berries",
+          "l": "Turkey wrap with lettuce",
+          "d": "Lean beef stir-fry"
+        },
+        "wednesday": {
+          "b": "Oatmeal with chia seeds",
+          "l": "Tuna salad (no mayo)",
+          "d": "Zucchini noodles with shrimp"
+        },
+        "thursday": {
+          "b": "Protein smoothie",
+          "l": "Quinoa bowl with chickpeas",
+          "d": "Grilled turkey breast with asparagus"
+        },
+        "friday": {
+          "b": "Cottage cheese with pineapple",
+          "l": "Lentil soup",
+          "d": "Roasted chicken with cauliflower"
+        },
+        "saturday": {
+          "b": "Scrambled eggs with avocado",
+          "l": "Shrimp salad",
+          "d": "Baked cod"
+        },
+        "sunday": {
+          "b": "Protein pancakes",
+          "l": "Vegetable soup",
+          "d": "Grilled chicken skewers"
+        }
+      },
+      "created_at": "2026-02-14T11:35:59.558Z"
+    },
+    {
+      "id": "90qod",
+      "name": "Muscle Gain Plan",
+      "description": "High calorie, high carb plan for mass building.",
+      "data": {
+        "monday": {
+          "b": "Whole egg omelette + 2 toast",
+          "l": "Chicken breast + brown rice + avocado",
+          "d": "Steak + sweet potato + asparagus"
+        },
+        "tuesday": {
+          "b": "Oatmeal with peanut butter & banana",
+          "l": "Pasta with lean ground beef",
+          "d": "Salmon + quinoa + mixed greens"
+        },
+        "wednesday": {
+          "b": "Greek yogurt with granola & nuts",
+          "l": "Turkey sandwich on whole grain + fruit",
+          "d": "Chicken thighs + roasted potatoes"
+        },
+        "thursday": {
+          "b": "Power smoothie (oats, protein, milk)",
+          "l": "Beef burrito bowl with extra beans",
+          "d": "Pork tenderloin + rice + broccoli"
+        },
+        "friday": {
+          "b": "Scrambled eggs with cheese & ham",
+          "l": "Tuna melt on sourdough",
+          "d": "Tofu stir-fry with loads of veggies & rice"
+        },
+        "saturday": {
+          "b": "French toast with maple syrup & protein shake",
+          "l": "Burger (lean beef) with side salad",
+          "d": "Lasagna"
+        },
+        "sunday": {
+          "b": "Large omelette + bagel",
+          "l": "Leftover lasagna",
+          "d": "Roasted chicken feast"
+        }
+      },
+      "created_at": "2026-02-14T11:35:59.559Z"
+    }
+  ]
+}
