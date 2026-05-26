@@ -28,7 +28,7 @@ async function migrate() {
         user_id UUID REFERENCES users(id) ON DELETE CASCADE,
         weight DECIMAL(5,2),
         height DECIMAL(5,2),
-        bmi DECIMAL(4,2),
+        bmi DECIMAL(6,2),
         goal_weight DECIMAL(5,2),
         age INTEGER,
         gender VARCHAR(20),
@@ -39,6 +39,7 @@ async function migrate() {
         intake_completed BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        phone VARCHAR(20),
         UNIQUE(user_id)
       );
     `);
@@ -55,9 +56,21 @@ async function migrate() {
           ADD COLUMN IF NOT EXISTS medications TEXT,
           ADD COLUMN IF NOT EXISTS allergies TEXT,
           ADD COLUMN IF NOT EXISTS smoking VARCHAR(20),
-          ADD COLUMN IF NOT EXISTS alcohol VARCHAR(20);
+          ADD COLUMN IF NOT EXISTS alcohol VARCHAR(20),
+          ADD COLUMN IF NOT EXISTS phone VARCHAR(20);
         `);
     console.log('✅ Client data schema updated with new fields');
+
+    // Update existing BMI columns to higher precision if they exist
+    try {
+      await db.query(`
+            ALTER TABLE client_data ALTER COLUMN bmi TYPE DECIMAL(6,2);
+            ALTER TABLE weight_history ALTER COLUMN bmi TYPE DECIMAL(6,2);
+        `);
+      console.log('✅ BMI column precision updated');
+    } catch (err) {
+      console.log('Notice: Column precision update skipped or already done');
+    }
 
     // Create weight_history table
     await db.query(`
@@ -65,7 +78,7 @@ async function migrate() {
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         user_id UUID REFERENCES users(id) ON DELETE CASCADE,
         weight DECIMAL(5,2) NOT NULL,
-        bmi DECIMAL(4,2),
+        bmi DECIMAL(6,2),
         date DATE DEFAULT CURRENT_DATE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         UNIQUE(user_id, date)
@@ -170,6 +183,30 @@ async function migrate() {
       );
     `);
     console.log('✅ Appointments table created');
+
+    // Create meal_logs table
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS meal_logs (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+        dish VARCHAR(255),
+        calories VARCHAR(50),
+        protein VARCHAR(50),
+        carbs VARCHAR(50),
+        fat VARCHAR(50),
+        image_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log('✅ Meal logs table created');
+
+    // Create a default test user for mock-token scenarios
+    await db.query(`
+      INSERT INTO users (id, name, email, password_hash, role)
+      VALUES ('00000000-0000-0000-0000-000000000000', 'Test Account', 'test@nutriconsult.pro', '$2b$10$hashed_password_placeholder', 'client')
+      ON CONFLICT (id) DO NOTHING;
+    `);
+    console.log('✅ Default test account created');
 
     console.log('🎉 All migrations completed successfully!');
     process.exit(0);

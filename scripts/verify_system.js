@@ -39,7 +39,7 @@ async function request(path, method = 'GET', body = null, headers = {}) {
 }
 
 async function runTests() {
-    console.log('🚀 Starting NutriConsult Pro Master Verification (Dependency-free)...');
+    console.log('🚀 Starting Nutrilas Master Verification (Dependency-free)...');
 
     try {
         // 1. Health Check

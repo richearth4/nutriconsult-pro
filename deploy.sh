@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 NutriConsult Pro - Production Deployment Script"
+echo "🚀 Nutrilas - Production Deployment Script"
 echo "=================================================="
 
 # Check if .env exists

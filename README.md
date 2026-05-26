@@ -1,210 +1,344 @@
-# NutriConsult Pro
+# Nutrilas
 
-A modern, AI-powered nutrition consultation platform for nutritionists and their clients.
+A comprehensive nutrition consultation and client management platform for nutritionists and their clients.
 
-## 🌟 Features
+## Features
+
+### For Nutritionists (Admin)
+- 📊 **Client Management** - Track and manage all clients in one place
+- 📝 **Intake Assessment** - Comprehensive client health and nutrition assessment
+- 🍽️ **Meal Planning** - Create personalized meal plans based on client goals
+- 📈 **Progress Tracking** - Monitor client weight and BMI trends with charts
+- 📅 **Appointment Scheduling** - Manage consultations and follow-ups
+- 💬 **Real-time Chat** - Communicate with clients instantly
+- 📧 **Email Notifications** - Automated appointment reminders and updates
+- 📊 **Analytics Dashboard** - Overview of practice metrics
 
 ### For Clients
-- **Smart Health Intake**: Comprehensive health assessment with AI-powered risk analysis
-- **AI Nutrition Plans**: Personalized daily calorie and macro targets
-- **Custom Meal Plans**: Nutritionist-assigned meal plans with dietary preference support
-- **Progress Tracking**: Weight history charts and goal progress visualization
-- **Educational Resources**: Access to curated nutrition content
-- **Profile Management**: Update health metrics and track changes over time
+- 📋 **Health Profile** - Complete intake questionnaire
+- 🎯 **Goal Setting** - Set and track nutrition goals
+- ⚖️ **Weight Tracking** - Log weight with visual progress charts
+- 🍴 **Meal Plans** - Access personalized nutrition plans
+- 📅 **Appointments** - Book and manage consultations
+- 💬 **Chat Support** - Direct communication with nutritionist
+- 📱 **Responsive Design** - Access from any device
 
-### For Nutritionists
-- **Client Dashboard**: Manage all clients in one place
-- **AI Recommendations**: Auto-generated nutrition targets based on client data
-- **Meal Plan Builder**: Create and assign custom meal plans
-- **Resource Library**: Manage and assign educational content
-- **PDF Reports**: Generate professional consultation reports
-- **Risk Alerts**: Automatic health risk detection and alerts
+## Tech Stack
 
-## 🚀 Quick Start (Development)
+- **Backend:** Node.js, Express.js
+- **Database:** PostgreSQL
+- **Authentication:** JWT (JSON Web Tokens)
+- **Real-time:** Socket.IO
+- **Email:** Nodemailer
+- **Validation:** Joi
+- **Charts:** Chart.js
+- **Payments:** Stripe, PayPal
+- **Security:** Helmet, CORS, Rate Limiting
+
+## 🚀 Quick Start (Docker)
+The recommended way to run this project is via Docker:
+
+```bash
+docker-compose up --build
+```
+This starts both the web application (port 5001) and the PostgreSQL database.
+
+## 🛠 Manual Installation
 
 ### Prerequisites
-- Node.js 18+
-- PostgreSQL 14+
+- Node.js (v18 or higher)
+- PostgreSQL
+ >= 13
+- npm or yarn
 
-### Local Setup
+### Installation
 
 1. **Clone the repository**
 ```bash
-git clone <your-repo-url>
-cd NutriConsult\ Pro
+git clone <repository-url>
+cd Nutrilas
 ```
 
-2. **Set up backend**
+2. **Install dependencies**
 ```bash
-cd backend
 npm install
+```
+
+3. **Setup environment variables**
+```bash
 cp .env.example .env
-# Edit .env with your database credentials
+```
+
+Edit `.env` with your configuration (see [Environment Variables](#environment-variables))
+
+4. **Setup database**
+```bash
 npm run migrate
+npm run seed
+```
+
+5. **Start the server**
+```bash
+# Development mode (with hot reload)
 npm run dev
+
+# Production mode
+npm start
 ```
 
-3. **Open frontend**
+6. **Access the application**
+```
+http://localhost:5001
+```
+
+### Default Credentials
+After seeding the database:
+- **Admin:** admin@nutri.com / admin123
+- **Client:** client@nutri.com / client123
+
+## Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+# Server Configuration
+NODE_ENV=development
+PORT=5001
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/nutriconsult
+DATABASE_SSL=false
+
+# JWT Authentication
+JWT_SECRET=your-super-secret-jwt-key-change-this
+JWT_EXPIRES_IN=7d
+
+# Frontend URL (for CORS)
+FRONTEND_URL=http://localhost:5001
+API_URL=http://localhost:5001
+
+# Email Configuration (Gmail example)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+EMAIL_FROM=Nutrilas <noreply@nutrilas.com>
+
+# Payment Processing
+STRIPE_SECRET_KEY=sk_test_...
+PAYPAL_CLIENT_ID=your-paypal-client-id
+PAYPAL_CLIENT_SECRET=your-paypal-client-secret
+
+# Logging
+LOG_LEVEL=info
+```
+
+## Project Structure
+
+```
+Nutrilas/
+├── assets/           # Frontend assets (CSS, JS, images)
+├── config/           # Configuration files
+├── middleware/       # Express middleware
+├── routes/           # API routes
+├── scripts/          # Database scripts and tests
+├── utils/            # Utility functions
+├── docs/             # Documentation
+├── server.js         # Application entry point
+└── package.json      # Dependencies
+```
+
+## Available Scripts
+
+### Development
 ```bash
-# Open index.html in your browser or use Live Server
+npm run dev          # Start with hot reload (nodemon)
+npm start            # Start production server
 ```
 
-4. **Test credentials**
-- Admin: `admin@nutri.com` / `password`
-- Client: `client@nutri.com` / `password`
-
-## 📦 Production Deployment
-
-See [Quick Start Deployment Guide](quick_start_deployment.md) for detailed instructions.
-
-### Recommended Stack
-- **Frontend**: Netlify or Vercel
-- **Backend**: Railway or Heroku
-- **Database**: Railway PostgreSQL or Supabase
-
-### One-Command Deploy (Railway)
+### Database
 ```bash
-cd backend
-railway login
-railway init
-railway add postgresql
-railway up
+npm run migrate      # Run database migrations
+npm run seed         # Seed database with sample data
 ```
 
-## 🏗️ Project Structure
-
-```
-NutriConsult Pro/
-├── assets/
-│   ├── css/
-│   │   └── style.css          # Main stylesheet
-│   ├── js/
-│   │   ├── app.js             # Frontend application logic
-│   │   ├── db.js              # Mock database (dev only)
-│   │   ├── api.js             # Production API client
-│   │   ├── auth.js            # Authentication logic
-│   │   └── nutrition.js       # AI nutrition engine
-│   └── images/
-├── backend/
-│   ├── config/
-│   │   └── database.js        # PostgreSQL connection
-│   ├── middleware/
-│   │   ├── auth.js            # JWT authentication
-│   │   └── validation.js      # Input validation
-│   ├── routes/
-│   │   ├── auth.js            # Auth endpoints
-│   │   ├── clients.js         # Client data endpoints
-│   │   ├── mealplans.js       # Meal plan endpoints
-│   │   └── resources.js       # Resource endpoints
-│   ├── scripts/
-│   │   └── migrate.js         # Database migrations
-│   ├── server.js              # Express server
-│   └── package.json
-├── index.html                 # Login page
-├── dashboard-admin.html       # Admin dashboard
-├── dashboard-client.html      # Client dashboard
-├── profile-client.html        # Client profile page
-└── README.md
+### Testing
+```bash
+npm run test:phase1  # Run all Phase 1 tests
+npm run test:security # Run security tests
+npm run test:database # Run database tests
+npm run test:errors   # Run error handling tests
 ```
 
-## 🔐 Security Features
-
-- **Password Hashing**: bcrypt with 10 rounds
-- **JWT Authentication**: Secure token-based auth
-- **Input Validation**: Joi schema validation
-- **SQL Injection Protection**: Parameterized queries
-- **Rate Limiting**: 100 requests per 15 minutes
-- **CORS Protection**: Configurable origin whitelist
-- **Helmet.js**: Security headers
-
-## 🛠️ Tech Stack
-
-### Frontend
-- Vanilla JavaScript (ES6+)
-- Chart.js for data visualization
-- jsPDF for report generation
-- Modern CSS with CSS Variables
-
-### Backend
-- Node.js + Express
-- PostgreSQL
-- JWT for authentication
-- bcrypt for password hashing
-
-## 📊 API Documentation
-
-### Authentication
-```
-POST /api/auth/register
-POST /api/auth/login
-GET  /api/auth/verify
+### Code Quality
+```bash
+npm run lint         # Check code style
+npm run lint:fix     # Auto-fix linting issues
+npm run format       # Format code with Prettier
+npm run format:check # Check code formatting
 ```
 
-### Clients
-```
-GET    /api/clients              # Get all clients (admin)
-GET    /api/clients/:userId      # Get client data
-POST   /api/clients/:userId/intake  # Save intake data
-```
+## API Documentation
 
-### Meal Plans
-```
-GET    /api/mealplans/:userId    # Get meal plan
-POST   /api/mealplans/:userId    # Save meal plan
-```
+See [docs/API.md](docs/API.md) for complete API documentation.
 
-### Resources
-```
-GET    /api/resources            # Get all resources
-GET    /api/resources/assigned/:userId  # Get assigned
-POST   /api/resources/assign     # Assign resource (admin)
-POST   /api/resources            # Add resource (admin)
-DELETE /api/resources/:id        # Delete resource (admin)
-```
+### Quick API Reference
 
-## 🧪 Testing
+**Authentication:**
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login
+
+**Clients:**
+- `GET /api/clients` - List all clients (admin)
+- `GET /api/clients/:id` - Get client details
+- `POST /api/clients/:id/intake` - Save intake data
+- `DELETE /api/clients/:id` - Delete client (admin)
+
+**Weight Tracking:**
+- `POST /api/clients/:id/weight` - Log weight
+- `GET /api/clients/:id/weight` - Get weight history
+
+**Appointments:**
+- `GET /api/appointments` - List appointments
+- `POST /api/appointments` - Create appointment
+- `PATCH /api/appointments/:id` - Update appointment
+
+## Security Features
+
+- ✅ **SQL Injection Prevention** - Parameterized queries
+- ✅ **XSS Protection** - Input sanitization
+- ✅ **Password Strength** - Enforced requirements
+- ✅ **JWT Authentication** - Secure token-based auth
+- ✅ **Rate Limiting** - Prevent brute force attacks
+- ✅ **CORS Protection** - Configured allowed origins
+- ✅ **Helmet Security** - HTTP headers protection
+- ✅ **Error Handling** - Centralized with no stack trace leaks
+- ✅ **Request ID Tracking** - For debugging and auditing
+- ✅ **Sensitive Data Redaction** - In logs
+
+## Development Guide
+
+See [docs/DEVELOPER.md](docs/DEVELOPER.md) for detailed development guidelines.
+
+### Code Style
+
+We use ESLint and Prettier for consistent code style:
+- Single quotes
+- Semicolons required
+- 4-space indentation
+- 100 character line width
+
+### Adding New Features
+
+1. Create feature branch
+2. Follow code style guide
+3. Add JSDoc comments
+4. Write tests
+5. Update documentation
+6. Submit pull request
+
+## Testing
+
+### Running Tests
 
 ```bash
-# Run backend tests
-cd backend
-npm test
+# All Phase 1 tests
+npm run test:phase1
 
-# Run linter
-npm run lint
+# Individual test suites
+npm run test:security
+npm run test:database
+npm run test:errors
 ```
 
-## 📈 Roadmap
+### Test Coverage
 
-- [ ] Mobile app (React Native)
-- [x] Advanced analytics dashboard
-- [x] Meal plan templates
-- [ ] Integration with fitness trackers
-- [ ] Multi-language support
-- [x] Stripe payment integration
-- [x] Email notifications
-- [x] Chat/messaging system
+- Security: SQL injection, XSS, rate limiting
+- Database: Transactions, rollback, timeouts
+- Error Handling: Standardized responses, request IDs
 
-## 🤝 Contributing
+## Deployment
+
+### Production Checklist
+
+- [ ] Set `NODE_ENV=production`
+- [ ] Use strong JWT secret (256+ bits)
+- [ ] Enable database SSL
+- [ ] Configure production CORS origins
+- [ ] Set up HTTPS
+- [ ] Configure email service
+- [ ] Set up payment gateways
+- [ ] Enable monitoring and logging
+- [ ] Set up automated backups
+
+### Recommended Services
+
+- **Hosting:** Railway, Heroku, DigitalOcean
+- **Database:** Railway PostgreSQL, Heroku Postgres, AWS RDS
+- **Monitoring:** Sentry, New Relic, Datadog
+- **Email:** SendGrid, Mailgun, AWS SES
+
+## Performance
+
+- Database connection pooling (max: 20 connections)
+- Query timeout protection (10 seconds)
+- Slow query logging (>1000ms)
+- Performance indexes on frequently queried columns
+- Chart instance cleanup to prevent memory leaks
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License.
+This project is proprietary software. All rights reserved.
 
-## 👥 Support
+## Support
 
-For support, email support@nutriconsult.com or open an issue.
+For questions or issues:
+- Check [documentation](docs/)
+- Review [API docs](docs/API.md)
+- Contact development team
 
-## 🙏 Acknowledgments
+## Changelog
+
+### Phase 1 (Completed)
+- ✅ Security hardening (SQL injection, XSS, rate limiting)
+- ✅ Centralized error handling
+- ✅ Structured logging with redaction
+- ✅ Database transactions and connection pooling
+- ✅ Request ID tracking
+- ✅ Comprehensive test suites
+
+### Phase 2 (In Progress)
+- ✅ ESLint and Prettier setup
+- ✅ Modular frontend structure
+- ✅ Utility modules (constants, formatters, DOM helpers)
+- ✅ State management system
+- ✅ Chart management with cleanup
+- ✅ API documentation
+- ✅ Developer guide
+- 🔄 JSDoc comments
+- 🔄 Unit tests with Jest
+
+## Acknowledgments
 
 - Chart.js for beautiful charts
-- jsPDF for PDF generation
-- The nutrition science community
+- Express.js community
+- PostgreSQL team
+- All contributors
 
 ---
 
